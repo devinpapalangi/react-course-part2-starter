@@ -1,45 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
-import { Todo } from "./hooks/useTodos";
 import axios from "axios";
+import useAddTodo from "./hooks/useAddTodo";
 
-interface AddTodoContext {
-  previousTodos: Todo[];
-}
 const TodoForm = () => {
-  const queryClient = useQueryClient();
   const ref = useRef<HTMLInputElement>(null);
-  const addTodo = useMutation<Todo, Error, Todo, AddTodoContext>({
-    mutationFn: async (todo: Todo) =>
-      await axios
-        .post<Todo>("https://jsonplaceholder.typicode.com/todoss", todo)
-        .then((res) => res.data),
-    onSuccess: (savedTodo, newTodo) => {
-      queryClient.setQueryData<Todo[]>(["todos"], (todos) =>
-        todos?.map((todo) => (todo.id === newTodo.id ? savedTodo : todo))
-      );
-    },
-    onMutate: async (newTodo) => {
-      const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]) || [];
-
-      //Cache Invalidation
-      // queryClient.invalidateQueries({
-      //   queryKey: ["todos"],
-      // })
-
-      //Cache Update
-      queryClient.setQueryData<Todo[]>(["todos"], (todos = []) => {
-        return [newTodo, ...todos];
-      });
-      if (ref.current) ref.current.value = "";
-
-      return { previousTodos };
-    },
-    onError: (error, newTodo, context) => {
-      if (!context) return;
-
-      queryClient.setQueryData<Todo[]>(["todos"], context.previousTodos);
-    },
+  const addTodo = useAddTodo(() => {
+    if (ref.current) {
+      ref.current.value = "";
+    }
   });
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -64,9 +33,7 @@ const TodoForm = () => {
           <input ref={ref} type="text" className="form-control" />
         </div>
         <div className="col">
-          <button className="btn btn-primary">
-            {addTodo.isPending ? "Saving..." : "Save"}
-          </button>
+          <button className="btn btn-primary">Add</button>
         </div>
       </form>
     </>

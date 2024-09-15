@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
+import { CACHE_KEY_POSTS } from "../constant";
 
 interface Post {
   id: number;
@@ -15,7 +15,7 @@ interface PostQuery {
 
 const usePosts = (query: PostQuery) => {
   return useInfiniteQuery<Post[]>({
-    queryKey: ["posts", query],
+    queryKey: [CACHE_KEY_POSTS, query],
     queryFn: async ({ pageParam = 1 }) =>
       axios
         .get<Post[]>("https://jsonplaceholder.typicode.com/posts", {
