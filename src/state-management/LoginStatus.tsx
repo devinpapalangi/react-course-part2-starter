@@ -1,9 +1,10 @@
 import { useContext, useReducer, useState } from "react";
 import authReducer from "./reducers/auth-reducers";
 import AuthContext from "./contexts/authContext";
+import useAuthContext from "./hooks/use-auth-context";
 
 const LoginStatus = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useAuthContext();
   const onLogut = () => dispatch({ type: "LOGOUT" });
   const onLogin = () => dispatch({ type: "LOGIN", username: "mosh.hamedani" });
 
