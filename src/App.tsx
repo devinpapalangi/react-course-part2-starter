@@ -9,6 +9,7 @@ import AuthContext from "./state-management/contexts/authContext";
 import authReducer from "./state-management/reducers/auth-reducers";
 import AuthProvider from "./state-management/providers/auth-provider";
 import TaskProvider from "./state-management/providers/task-provider";
+import Counter from "./state-management/counters/counter";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <TaskProvider>
           <NavBar />
           <HomePage />
+          <Counter />
         </TaskProvider>
       </AuthProvider>
     </>
