@@ -1,13 +1,24 @@
+import { useReducer } from "react";
 import "./App.css";
-import PostList from "./react-query/PostList";
-import TodoForm from "./react-query/TodoForm";
-import TodoList from "./react-query/TodoList";
+import TaskContext from "./state-management/contexts/taskContext";
+import HomePage from "./state-management/HomePage";
+import LoginStatus from "./state-management/LoginStatus";
+import { tasksReducer } from "./state-management/reducers/task-reducers";
+import NavBar from "./state-management/NavBar";
+import AuthContext from "./state-management/contexts/authContext";
+import authReducer from "./state-management/reducers/auth-reducers";
+import AuthProvider from "./state-management/providers/auth-provider";
+import TaskProvider from "./state-management/providers/task-provider";
 
 function App() {
   return (
     <>
-      <TodoForm />
-      <TodoList />
+      <AuthProvider>
+        <TaskProvider>
+          <NavBar />
+          <HomePage />
+        </TaskProvider>
+      </AuthProvider>
     </>
   );
 }

@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useContext, useReducer, useState } from "react";
+import authReducer from "./reducers/auth-reducers";
+import AuthContext from "./contexts/authContext";
 
 const LoginStatus = () => {
-  const [user, setUser] = useState('');
+  const { user, dispatch } = useContext(AuthContext);
+  const onLogut = () => dispatch({ type: "LOGOUT" });
+  const onLogin = () => dispatch({ type: "LOGIN", username: "mosh.hamedani" });
 
   if (user)
     return (
       <>
         <div>
           <span className="mx-2">{user}</span>
-          <a onClick={() => setUser('')} href="#">
+          <a onClick={onLogut} href="#">
             Logout
           </a>
         </div>
@@ -16,7 +20,7 @@ const LoginStatus = () => {
     );
   return (
     <div>
-      <a onClick={() => setUser('mosh.hamedani')} href="#">
+      <a onClick={onLogin} href="#">
         Login
       </a>
     </div>
